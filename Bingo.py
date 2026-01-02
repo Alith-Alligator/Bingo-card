@@ -3,14 +3,13 @@ import random
 # --------------------------------------------------------------
 # -----------------------Bingo spot class-----------------------
 class BingoSpot:
-    markedSpots = 1
 
-    def __init__(self, attribute = 0, mark = False): # Initiate every spot 
-        self.Attribute = attribute
+    def __init__(self, desc = 0, mark = False): # Initiate every spot
+        self.Description = desc
         self.marked = mark
 
     def __repr__(self):
-        return f"{self.Attribute}-:is:-{self.marked}"
+        return f"{self.Description}-:is:-{self.marked}"
 
 # mark property
     @property
@@ -19,23 +18,16 @@ class BingoSpot:
 
     @mark.setter
     def mark(self,Value):
-        if self.marked == Value: #Check if user is setting the mark to something it already is
-            return
+        self.marked = Value
 
-        self.marked = Value #Set the mark then increase or decrease count of how many spots are marked
-        if Value:
-            BingoSpot.markedSpots += 1
-        else:
-            BingoSpot.markedSpots -= 1
-
-# Attribute property
+# Description property
     @property
-    def attribute(self):
-        return  self.Attribute
+    def description(self):
+        return  self.Description
 
-    @attribute.setter
-    def attribute(self,Value): #Set property
-        self.Attribute = Value
+    @description.setter
+    def description(self,value): #Set property
+        self.Description = value
 # -----------------------Bingo spot class-----------------------
 # --------------------------------------------------------------
 
@@ -51,7 +43,7 @@ class BingoCard:
                      [BingoSpot(), BingoSpot(), BingoSpot(), BingoSpot(), BingoSpot()]]
 
     def __repr__(self):
-        return show()
+        return self.show()
 
     def show(self):
         return f"{self.card[0]} \n {self.card[1]} \n {self.card[2]} \n {self.card[3]} \n {self.card[4]} \n"
@@ -59,13 +51,13 @@ class BingoCard:
     def save(self,name): # Save the Bingocard into an external file
         text_trans =" \n".join([" -:_j_:- ".join([str(spot) for spot in row]) for row in self.card]) #Transform the card variable into a savable string
 
-        with open(name,"w") as bingo: # save it into a file
+        with open(name,"w", encoding="UTF-8") as bingo: # save it into a file
             bingo.write(text_trans)
         print("Bingo card has been saved successfullu")
 
     def load(self,name): #Load Bingocard from an external file
         try:
-            with open(name, "r") as bingo:
+            with open(name, "r", encoding="UTF-8") as bingo:
                 dataT1 = bingo.readlines()
             dataT2 = [line.split(" -:_j_:- ") for line in dataT1]
 
@@ -73,7 +65,7 @@ class BingoCard:
             for line in dataT2:
                 x = 0
                 for spot in line:
-                    self.card[y][x].attribute = spot.split("-:is:-")[0]
+                    self.card[y][x].description = spot.split("-:is:-")[0]
                     self.card[y][x].mark = spot.split("-:is:-")[1]
 
                     x += 1
@@ -119,15 +111,15 @@ def CoL(card1):
                         for j in range(5):
                             if i == 2 and j == 2:
                                 continue
-                            card1.card[i][j].attribute = random.choice(templist)
-                            templist.remove(card1.card[i][j].attribute)
+                            card1.card[i][j].description = random.choice(templist)
+                            templist.remove(card1.card[i][j].description)
 
                 case 'n':
                     for i in range(5):
                         for j in range(5):
                             if i == 2 and j == 2:
                                 continue
-                            card1.card[i][j].attribute = input(f"{i+1},{j+1} - ")
+                            card1.card[i][j].description = input(f"{i+1},{j+1} - ")
 
 # -----------------------Creation or Load-----------------------
 # --------------------------------------------------------------
@@ -138,9 +130,9 @@ def CoL(card1):
 def main():
     card1 = BingoCard()
     while(True):
-        Choice = input("What would you like to do?\n 1- Print card\n 2- Load or create a card\n 3- Mark a spot\n 4- Reassign a spot\n 5- Save the Bingo card\n 6- Exit the program\n")
+        choice = input("What would you like to do?\n 1- Print card\n 2- Load or create a card\n 3- Mark a spot\n 4- Reassign a spot\n 5- Save the Bingo card\n 6- Exit the program\n")
 
-        match int(Choice):
+        match int(choice):
             case 1:
                 print(card1.show())
             case 2:
@@ -154,16 +146,17 @@ def main():
                 v = input("What would you like to reassign the spot to?\n")
                 x = int(input("Which row is the spot on?\n"))
                 y = int(input("Which collumn is the spot on?\n"))
-                card1.card[x][y].attribute = v
+                card1.card[x][y].description = v
             case 5:
                 name = input("What file name do you want to save it as? (inclode the files extention, IE .txt or similar)\n")
                 card1.save(name)
             case 6:
-                E = input("Are you sure you wish to exit? (Insert y to exit):\n").lower()
-                if E == "y":
+                e = input("Are you sure you wish to exit? (Insert y to exit):\n").lower()
+                if e == "y":
                     break
 
 # -----------------------------Main-----------------------------
 # --------------------------------------------------------------
 
-main()
+if __name__ == "__main__":
+    main()
