@@ -80,15 +80,15 @@ class BingoCard:
 
 # --------------------------------------------------------------
 # -----------------------Creation or Load-----------------------
-def CoL(card1):
+def CoL(card1): #Creation or load
 
-    while (True):
+    while (True): # While loop to make sure user chooses to load or to start a new card
 
         load = input("would you like to load a previous save or start a new one?('y' for load or 'n' for not): \n").lower()
         if (load in ['y', 'n']):
             break
 
-    match load:
+    match load: 
         case 'y':
             name = input("What is the name of the file you would like to load from? (inclode the files extention, IE .txt or similar)\n")
             card1.load(name)
