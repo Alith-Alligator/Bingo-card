@@ -1,4 +1,5 @@
 import random
+from csv import DictReader,DictWriter
 from Bingo_Classes import *
 
 # --------------------------------------------------------------
@@ -88,7 +89,7 @@ def main():
                 card1.card[x-1][y-1].description = v
 
             case 5:
-                name = input("What file name do you want to save it as? (inclode the files extention, IE .txt or similar)\n")
+                name = "".join([input("What name do you want to save as?\n"),".csv"])
                 card1.save(name)
 
             case 6:
