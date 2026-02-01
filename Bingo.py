@@ -1,4 +1,5 @@
 import random
+from csv import DictReader,DictWriter
 from Bingo_Classes import *
 
 # --------------------------------------------------------------
@@ -25,8 +26,8 @@ def random_create(card1):
         for j in range(5):
             if i == 2 and j == 2:
                 continue
-            card1.card[i][j].description = random.choice(templist)
-            templist.remove(card1.card[i][j].description)
+            card1.card[i][j]["description"] = random.choice(templist)
+            templist.remove(card1.card[i][j]["description"])
 # -----------------------Radom Creation-------------------------
 # --------------------------------------------------------------
 
@@ -39,7 +40,7 @@ def choice_create(card1):
         for j in range(5):
             if i == 2 and j == 2:
                 continue
-            card1.card[i][j].description = input(f"{i+1},{j+1} - ")
+            card1.card[i][j]["description"] = input(f"{i+1},{j+1} - ")
 # -----------------------Chosen Creation------------------------
 # --------------------------------------------------------------
 
@@ -79,16 +80,16 @@ def main():
                 v = input("Would you like to mark or unmark the spot? (1 to mark, 0 to unmark)\n")
                 x = int(input("Which row is the spot on?\n"))
                 y = int(input("Which collumn is the spot on?\n"))
-                card1.card[x-1][y-1].mark = bool(int(v))
+                card1.card[x-1][y-1]["mark"] = bool(int(v))
 
             case 4:
                 v = input("What would you like to reassign the spot to?\n")
                 x = int(input("Which row is the spot on?\n"))
                 y = int(input("Which collumn is the spot on?\n"))
-                card1.card[x-1][y-1].description = v
+                card1.card[x-1][y-1]["description"] = v
 
             case 5:
-                name = input("What file name do you want to save it as? (inclode the files extention, IE .txt or similar)\n")
+                name = "".join([input("What name do you want to save as?\n"),".csv"])
                 card1.save(name)
 
             case 6:
