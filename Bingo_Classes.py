@@ -1,4 +1,5 @@
 import random
+from csv import DictReader,DictWriter
 
 # --------------------------------------------------------------
 # -----------------------Bingo spot class-----------------------
@@ -6,29 +7,45 @@ class BingoSpot:
     """A class to reprsent Spots on a bingocard"""
 
     def __init__(self, desc = 0, mark = False): # Initiate every spot
-        self.Description = desc
-        self.marked = mark
+        self._dictio = {
+            "Description":desc,
+            "Mark":mark}
 
     def __repr__(self):
-        return f"{self.Description}-:is:-{self.marked}"
+        return f"{self._dictio["Description"]}-:is:-{self._dictio["Mark"]}"
+
+    def keys(self):
+        return self._dictio.keys()
+    
+    def get(self,key,default = None):
+        return self._dictio.get(key, default)
 
 # mark property
     @property
     def mark(self):
-        return self.marked
+        return self._dictio["Mark"]
 
     @mark.setter
-    def mark(self,Value):
-        self.marked = Value
+    def mark(self,value):
+        self._dictio["Mark"] = value
 
 # Description property
     @property
     def description(self):
-        return  self.Description
+        return  self._dictio["Description"]
 
     @description.setter
     def description(self,value): #Set property
-        self.Description = value
+        self._dictio["Description"] = value
+
+# Spot Dictionary
+    @property
+    def dictio(self):
+        return self._dictio
+
+    @description.setter
+    def dictio(self,value): #Set property
+        pass
 # -----------------------Bingo spot class-----------------------
 # --------------------------------------------------------------
 
@@ -52,12 +69,14 @@ class BingoCard:
     def show(self):
         return f"{self.card[0]} \n {self.card[1]} \n {self.card[2]} \n {self.card[3]} \n {self.card[4]} \n"
 
-    def save(self,name): # Save the Bingocard into an external file
-        text_trans =" \n".join([" -:_j_:- ".join([str(spot) for spot in row]) for row in self.card]) #Transform the card variable into a savable string
-
-        with open(name,"w", encoding="UTF-8") as bingo: # save it into a file
-            bingo.write(text_trans)
-        print("Bingo card has been saved successfullu")
+    def save(self,name):
+        with open(name,"w", encoding="UTF-8") as bingos: #Create or Open file to write on
+            headers =["Description","Mark"]
+            writer = DictWriter(bingos, fieldnames=headers)
+            writer.writeheader()
+            for row in self.card:
+                for spot in row:
+                    writer.writerow(spot)
 
     def load(self,name): #Load Bingocard from an external file
         try:
