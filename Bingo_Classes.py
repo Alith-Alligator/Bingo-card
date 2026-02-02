@@ -32,18 +32,18 @@ class BingoCard:
     def load(self,name): #Load Bingocard from an external file
         try:
             with open(name, "r", encoding="UTF-8") as bingo:
-                dataT1 = bingo.readlines()
-            dataT2 = [line.split(" -:_j_:- ") for line in dataT1]
+                data2 = list()
+                data = DictReader(bingo)
 
-            y = 0
-            for line in dataT2:
-                x = 0
-                for spot in line:
-                    self.card[y][x]["description"] = spot.split("-:is:-")[0]
-                    self.card[y][x]["mark"] = spot.split("-:is:-")[1]
+                for spot in data:
+                    data2.append(spot)
 
-                    x += 1
-                y += 1
+                z = 0
+                for x in range(5):
+                    for y in range(5):
+                        self.card[x][y] = data2[z]
+                        z += 1
+
 
             print("Bingo card has been loaded successfully")
         except FileNotFoundError:
