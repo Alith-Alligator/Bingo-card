@@ -6,8 +6,7 @@ from Bingo_Classes import *
 # ---------------------------Load-------------------------------
 def load(card1): 
     """Load a Bingocard savestate"""
-    name = input(
-            "What is the name of the file you would like to load from? (inclode the files extention, IE .txt or similar)\n")
+    name = "".join([input("What is the name of the file you would like to load from?\n"),".csv"])
     card1.load(name)
 # ---------------------------Load-------------------------------
 # --------------------------------------------------------------
@@ -59,12 +58,12 @@ def main():
             case 2:
                 while (True): # While loop to make sure user chooses to load or to start a new card
                     y = input(
-                        "would you like to load a previous save or start a new one?('l' for load or 'n' for new): \n").lower()
+                        "would you like to create a new save or load a previous save?('c' for Create or 'l' for Load): \n").lower()
                     if y == 'l':
                         load(card1)
                         break
 
-                    elif y == 'n':
+                    elif y == 'c':
                         while (True):
                             x = input(
                                 "Would you like to insert items in a random orientation, or for you to choose it? ('r' for random or 'c' to choose):\n").lower()
@@ -102,3 +101,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
