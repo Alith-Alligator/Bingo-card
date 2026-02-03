@@ -1,12 +1,11 @@
 import random
-from csv import DictReader,DictWriter
 from Bingo_Classes import *
 
 # --------------------------------------------------------------
 # ---------------------------Load-------------------------------
 def load(card1): 
     """Load a Bingocard savestate"""
-    name = "".join([input("What is the name of the file you would like to load from?\n"),".csv"])
+    name = "".join([input("What is the name of the file you would like to load from?\n"),".json"])
     card1.load(name)
 # ---------------------------Load-------------------------------
 # --------------------------------------------------------------
@@ -88,7 +87,7 @@ def main():
                 card1.card[x-1][y-1]["description"] = v
 
             case 5:
-                name = "".join([input("What name do you want to save as?\n"),".csv"])
+                name = "".join([input("What name do you want to save as?\n"),".json"])
                 card1.save(name)
 
             case 6:
