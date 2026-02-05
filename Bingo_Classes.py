@@ -1,6 +1,5 @@
 import random
-from csv import DictReader,DictWriter
-
+import json
 
 # --------------------------------------------------------------
 # -----------------------Bingo card class-----------------------
@@ -14,35 +13,43 @@ class BingoCard:
                      [{"description":0,"mark":False}, {"description":0,"mark":False}, {"description":0,"mark":False},{"description":0,"mark":False}, {"description":0,"mark":False}],
                      [{"description":0,"mark":False}, {"description":0,"mark":False}, {"description":0,"mark":False}, {"description":0,"mark":False}, {"description":0,"mark":False}]]
 
+        self._bingo = [[0,0,0,0,0],[0,0,0,0,0],[0,0]] #Rows then Collums then diagonals
+
     def __repr__(self):
         return self.show()
 
-    def show(self):
-        return f"{self.card[0]} \n {self.card[1]} \n {self.card[2]} \n {self.card[3]} \n {self.card[4]} \n"
+    def show(self): # Return the bingo card in a readable format ( yes it is ugly)
+        self.check_for_bingo()
+        return f"{list(self.card[0][0].values())} || {list(self.card[0][1].values())} || {list(self.card[0][2].values())} || {list(self.card[0][3].values())} || {list(self.card[0][4].values())} \n {list(self.card[1][0].values())} || {list(self.card[1][1].values())} || {list(self.card[1][2].values())} || {list(self.card[1][3].values())} || {list(self.card[1][4].values())} \n {list(self.card[2][0].values())} || {list(self.card[2][1].values())} || {list(self.card[2][2].values())} || {list(self.card[2][3].values())} || {list(self.card[2][4].values())} \n {list(self.card[3][0].values())} || {list(self.card[3][1].values())} || {list(self.card[3][2].values())} || {list(self.card[3][3].values())} || {list(self.card[3][4].values())} \n {list(self.card[4][0].values())} || {list(self.card[4][1].values())} || {list(self.card[4][2].values())} || {list(self.card[4][3].values())} || {list(self.card[4][4].values())} \n"
+
+    def check_for_bingo(self):
+        for row in range(5): #Rows
+            bing = all(self.card[row][collumn]["mark"] for collumn in range(5))
+            self._bingo[0][row] = bing
+                
+        for collumn in range(5): #Collumns
+            bing = all(self.card[row][collumn]["mark"] for row in range(5))
+            self._bingo[1][collumn] = bing
+
+        bing = all(self.card[i][i]["mark"] for i in range(5)) #First diagonal
+        self._bingo[2][0] = bing
+
+        bing = all(self.card[i][4-i]["mark"] for i in range(5)) #Second diagonal
+        self._bingo[2][1] = bing
+
+        print(self._bingo)
+                
+            
 
     def save(self,name):
         with open(name,"w", encoding="UTF-8") as bingos: #Create or Open file to write on
-            headers =["description","mark"]
-            writer = DictWriter(bingos, fieldnames=headers)
-            writer.writeheader()
-            for row in self.card:
-                for spot in row:
-                    writer.writerow(spot)
+            json.dump(self.card, bingos)
 
     def load(self,name): #Load Bingocard from an external file
         try:
-            with open(name, "r", encoding="UTF-8") as bingo:
-                data2 = list()
-                data = DictReader(bingo)
+            with open(name, "r", encoding="UTF-8") as bingos:
+               self.card = json.load(bingos)
 
-                for spot in data:
-                    data2.append(spot)
-
-                z = 0
-                for x in range(5):
-                    for y in range(5):
-                        self.card[x][y] = data2[z]
-                        z += 1
 
 
             print("Bingo card has been loaded successfully")
@@ -50,3 +57,20 @@ class BingoCard:
             print(f"File '{name}' does not exist")
 # -----------------------Bingo card class-----------------------
 # --------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
