@@ -53,6 +53,7 @@ def main():
         match int(choice):
             case 1:
                 print(card1.show())
+                print(card1._bingo)
 
             case 2:
                 while (True): # While loop to make sure user chooses to load or to start a new card
